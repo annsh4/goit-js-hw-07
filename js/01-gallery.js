@@ -8,7 +8,7 @@ function createGalleryItemsMarkup(items) {
   return items
     .map(({ preview, original, description }) => {
       return `
-		<div class="gallery__item">
+		<li class="gallery__item">
 			<a class="gallery__link" href="${original}">
 				<img
 					class="gallery__image"
@@ -17,7 +17,39 @@ function createGalleryItemsMarkup(items) {
 					alt="${description}"
 				/>
 			</a>
-		</div>`;
+		</li>`;
     })
     .join("");
+}
+
+gallaryContainer.addEventListener("click", onImgClick);
+
+function onImgClick(evt) {
+  evt.preventDefault();
+
+  if (evt.target.nodeName !== "IMG") return;
+
+  const isItemImage = evt.target.classList.contains("gallery__image");
+  if (!isItemImage) return;
+
+  const currentImageUrl = evt.target.dataset.source;
+
+  const instance = basicLightbox.create(
+    `<img src="${currentImageUrl}" width="1280" height="auto"/>`,
+    {
+      onShow: () => {
+        window.addEventListener("keydown", onEscPress);
+      },
+      onClose: () => {
+        window.removeEventListener("keydown", onEscPress);
+      },
+    }
+  );
+
+  instance.show();
+
+  function onEscPress(evt) {
+    if (evt.code !== "Escape") return;
+    instance.close();
+  }
 }
