@@ -1,4 +1,4 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 
 const gallaryContainer = document.querySelector(".gallery");
 const itemsMarkup = createGalleryItemsMarkup(galleryItems);
@@ -20,3 +20,9 @@ function createGalleryItemsMarkup(items) {
     })
     .join("");
 }
+
+var lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionPosition: "bottom",
+  captionDelay: 250,
+});
